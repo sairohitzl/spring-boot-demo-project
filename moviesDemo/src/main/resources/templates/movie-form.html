@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>Save Movie</title>
+    <style type="text/css">
+        input
+        {
+        display: inline-block;
+        width: 200px;
+        text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h3>Movie Form</h3>
+    <hr>
+
+    <p class="h4 mb-4">Save Movie</p>
+
+    <form action="#" th:action="@{/api/save-movie}"
+          th:object="${movie}" method="POST">
+
+        <!-- add hidden form field to handle update -->
+
+        <input type="hidden" th:field="*{id}"/>
+
+        <p> Enter Movie Name:</p>
+        <input type="text" th:field="*{movieName}"
+               class="form-control mb-4 col-4" placeholder="Movie Name" required="required" pattern="[^\s][A-z0-9À-ž\s]+">
+
+        <p> Enter Length of Movie in (mins):</p>
+        <input type="text" th:field="*{length}"
+               class="form-control mb-4 col-4" placeholder="Length" required="required" pattern="[0-9]+" >
+
+
+        <!--<input type="text" th:field="*{genre}"
+               class="form-control mb-4 col-4" placeholder="Genre">-->
+
+        <p >Genre: </p>
+        <div class="row col-12">
+            <select style="min-height:35px;min-width:370px;" class="selectpicker "  th:field="*{genre}">
+                <option th:value="Action" th:text="Action"></option>
+                <option th:value="Comedy" th:text="Comedy"></option>
+                <option th:value="Crime" th:text="Crime"></option>
+                <option th:value="Drama" th:text="Drama"></option>
+                <option th:value="Horror" th:text="Horror"></option>
+                <option th:value="Suspense" th:text="Suspense"></option>
+                <option th:value="Thriller" th:text="Thriller"></option>
+            </select>
+
+        </div>
+        <!--<label>Genre</label>
+        <select th:field="*{genre}"-->
+        <br>
+
+        <button type="submit" class="btn btn-info col-2">Save</button>
+
+    </form>
+
+    <hr>
+    <a th:href="@{/api/movies-directory}">Back to Movies List</a>
+
+</div>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
