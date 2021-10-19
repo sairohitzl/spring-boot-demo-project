@@ -36,11 +36,11 @@ public class MovieConverter
 
     public List<MovieDTO> entityToDto(List<Movie> movies)
     {
-        return  movies.stream().map(x->entityToDto(x)).collect(Collectors.toList());
+        return  movies.stream().map(this::entityToDto).collect(Collectors.toList());
 
     }
     public List<Movie> dtoToEntity(List<MovieDTO> movieDTOList){
 
-        return movieDTOList.stream().map(x -> dtoToEntity(x)).collect(Collectors.toList());
+        return movieDTOList.stream().map(this::dtoToEntity).collect(Collectors.toList());
     }
 }

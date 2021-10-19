@@ -31,11 +31,11 @@ public class ReviewConverter {
 
     public List<ReviewDTO> entityToDto(List<Review> reviews)
     {
-        return  reviews.stream().map(x->entityToDto(x)).collect(Collectors.toList());
+        return  reviews.stream().map(this::entityToDto).collect(Collectors.toList());
 
     }
     public List<Review> dtoToEntity(List<ReviewDTO> reviewDTOList){
 
-        return reviewDTOList.stream().map(x -> dtoToEntity(x)).collect(Collectors.toList());
+        return reviewDTOList.stream().map(this::dtoToEntity).collect(Collectors.toList());
     }
 }
