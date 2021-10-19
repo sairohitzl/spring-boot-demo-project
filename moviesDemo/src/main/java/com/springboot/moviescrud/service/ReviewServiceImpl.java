@@ -2,6 +2,7 @@ package com.springboot.moviescrud.service;
 
 import com.springboot.moviescrud.dao.ReviewRepository;
 import com.springboot.moviescrud.entity.Review;
+import com.springboot.moviescrud.exceptions.MyRunTimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ public class ReviewServiceImpl implements ReviewService {
         }
         else
         {
-            throw new RuntimeException("Did not  find movie of id: "+theId);
+            throw new MyRunTimeException("Did not  find movie of id: "+theId);
         }
         return theReview;
     }

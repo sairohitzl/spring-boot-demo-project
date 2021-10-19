@@ -26,9 +26,9 @@
 <div  class="container">
 
 
-<!--    <div style="text-align-last: right;" >Logged in as:</div>-->
+
     <div style="text-align-last: right;" th:text="'Logged in as: '+${user.username}"/>
-    <div style="text-align-last: right;" th:text="'Role: '+${user.theAuthority.authority} "/>
+    <div style="text-align-last: right;" th:text="'Role: '+${user.theAuthority.authorityRole} "/>
     <form th:action="@{/logout}"
           method="POST" style="text-align-last: right;">
 
@@ -51,10 +51,11 @@
 
 
     <table class="table table-bordered table-striped">
+        <caption>Table of movies</caption>
         <thead class="thead-dark">
         <tr>
             <th>
-<!--                class="link"-->
+
                 <a  class="btn btn-dark " style="vertical-align:middle" th:href="@{'/api/page/' + ${currentPage} +
                 '?sortField=movieName&sortDir=' + ${reverseSortDir}}">Movie Name</a>
             </th>
@@ -97,12 +98,6 @@
                 </a>
 
             </td>
-            <!-- review-->
-            <!--<a th:href="@{/api/showFormForAddReview(movieId=${tempMovie.id})}"
-               class="btn btn-success btn-sm mb-3">
-                show reviews
-            </a>-->
-
         </tr>
         </tbody>
     </table>
@@ -128,7 +123,7 @@
                  '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
                 <span th:unless="${currentPage < totalPages}">Last</span>
             </div>
-<!--            <a th:href="@{'/api/page/' + ${2}}">page2 </a>-->
+
 
         </div>
 

@@ -32,7 +32,6 @@
     <form action="#" th:action="@{/api/save-movie}"
           th:object="${movie}" method="POST">
 
-        <!-- add hidden form field to handle update -->
 
         <input type="hidden" th:field="*{id}"/>
 
@@ -44,9 +43,6 @@
         <input type="text" th:field="*{length}"
                class="form-control mb-4 col-4" placeholder="Length" required="required" pattern="[0-9]+" >
 
-
-        <!--<input type="text" th:field="*{genre}"
-               class="form-control mb-4 col-4" placeholder="Genre">-->
 
         <p >Genre: </p>
         <div class="row col-12">
@@ -61,8 +57,6 @@
             </select>
 
         </div>
-        <!--<label>Genre</label>
-        <select th:field="*{genre}"-->
         <br>
 
         <button type="submit" class="btn btn-info col-2">Save</button>

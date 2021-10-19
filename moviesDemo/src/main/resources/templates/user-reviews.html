@@ -20,22 +20,12 @@
     <h3>Reviews</h3>
     <hr>
 
-    <!-- Add a button -->
-    <!--<a th:href="@{/api/showFormForAdd}"
-       class="btn btn-primary btn-sm mb-3">
-        Add Movie
-    </a>-->
 
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
         <tr>
             <th>Movie Name</th>
             <th>Review content</th>
-
-            <!--<th>Length(minutes)</th>
-            <th>Genre</th>
-            <th>Action</th>
-        </tr>-->
         </thead>
 
         <tbody>
@@ -44,32 +34,6 @@
 
             <td th:text="${tempReview.movie.movieName}"/>
             <td th:text="${tempReview.reviewContent}" />
-
-
-
-
-
-
-
-                <!-- update -->
-                <!--<a th:href="@{/api/showFormForUpdate(movieId=${tempMovie.id})}"
-                   class="btn btn-info btn-xs">
-                    Update
-                </a>-->
-
-                <!-- delete -->
-                <!--<a th:href="@{/api/showFormForDelete(movieId=${tempMovie.id})}"
-                   class="btn btn-danger btn-xs"
-                   onclick="if (!(confirm('Are you sure you want to delete this movie?'))) return false">
-                    Delete
-                </a>-->
-
-                <!-- review-->
-                <!--<a th:href="@{/api/showFormForAddReview(movieId=${tempMovie.id})}"
-                   class="btn btn-success btn-xs">
-                    Add review
-                </a>-->
-
         </tr>
         </tbody>
     </table>

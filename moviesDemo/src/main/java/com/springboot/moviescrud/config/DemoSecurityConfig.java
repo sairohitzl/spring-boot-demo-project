@@ -6,6 +6,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 import javax.sql.DataSource;
 
@@ -29,7 +31,7 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter {
 								"FROM authorities a, users u " +
 								"WHERE u.username = ? " +
 								"AND u.authorities_id = a.authorities_id"
-				);
+				).passwordEncoder(new BCryptPasswordEncoder());
 
 	}
 
@@ -48,8 +50,7 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter {
 				.permitAll()
 				.and()
 				.logout().permitAll();
-			//.and()
-			//.exceptionHandling().accessDeniedPage("/access-denied");
+
 		
 	}
 		

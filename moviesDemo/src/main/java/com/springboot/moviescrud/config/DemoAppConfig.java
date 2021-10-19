@@ -1,6 +1,7 @@
 package com.springboot.moviescrud.config;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.springboot.moviescrud.exceptions.MyRunTimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -58,7 +59,7 @@ public class DemoAppConfig {
 		try {
 			securityDataSource.setDriverClass(env.getProperty("jdbc.driver"));
 		} catch (PropertyVetoException exc) {
-			throw new RuntimeException(exc);
+			throw new MyRunTimeException("database error!");
 		}
 		
 		// log the connection props

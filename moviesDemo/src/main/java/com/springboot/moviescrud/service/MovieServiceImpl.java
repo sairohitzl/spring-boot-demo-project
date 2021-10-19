@@ -2,6 +2,7 @@ package com.springboot.moviescrud.service;
 
 import com.springboot.moviescrud.dao.MovieRepository;
 import com.springboot.moviescrud.entity.Movie;
+import com.springboot.moviescrud.exceptions.MyRunTimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +19,8 @@ public class MovieServiceImpl implements MovieService {
 
     private MovieRepository movieRepository;
 
+
+
     @Autowired
     public MovieServiceImpl( MovieRepository movieRepository)
     {
@@ -25,9 +28,8 @@ public class MovieServiceImpl implements MovieService {
     }
     @Override
     public List<Movie> findAll() {
-        List<Movie> movies = movieRepository.findAll();
-        System.out.println("getting data from db: " + movies);
-        return movies;
+
+        return movieRepository.findAll();
     }
 
     @Override
@@ -39,14 +41,14 @@ public class MovieServiceImpl implements MovieService {
         }
         else
         {
-            throw new RuntimeException("Did not  find movie of id: "+theId);
+            throw new MyRunTimeException("Did not  find movie of id: "+theId);
         }
         return theMovie;
     }
 
     @Override
-    public void save(Movie theMovie) {
-        movieRepository.save(theMovie);
+    public void save(Movie movie) {
+        movieRepository.save(movie);
     }
 
     @Override
@@ -56,7 +58,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Page<Movie> findPaginated(int pageNo, int pageSize,
-                                     String sortField,String sortDirection) {
+                                        String sortField, String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name())
                 ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
         Pageable pageable = PageRequest.of(pageNo-1,pageSize,sort);

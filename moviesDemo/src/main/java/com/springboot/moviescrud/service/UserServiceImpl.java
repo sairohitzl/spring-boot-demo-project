@@ -2,6 +2,7 @@ package com.springboot.moviescrud.service;
 
 import com.springboot.moviescrud.dao.UserRepository;
 import com.springboot.moviescrud.entity.User;
+import com.springboot.moviescrud.exceptions.MyRunTimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
         }
         else {
             // we didn't find the player
-            throw new RuntimeException("Did not find player id - " + theId);
+            throw new MyRunTimeException("Did not find player id - " + theId);
         }
 
         return theUser;

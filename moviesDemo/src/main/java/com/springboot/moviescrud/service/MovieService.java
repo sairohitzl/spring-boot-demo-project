@@ -15,6 +15,6 @@ public interface MovieService {
 
     public void deleteById(int theId);
 
-    Page<Movie> findPaginated(int pageNo,int pageSize,String sortField,String sortDirection);
+    Page<Movie> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
 
 }

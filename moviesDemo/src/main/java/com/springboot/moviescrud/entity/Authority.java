@@ -22,7 +22,7 @@ public class Authority {
 
 
     @Column(name = "authority")
-    private  String authority;
+    private  String authorityRole;
 
 
     @ToString.Exclude

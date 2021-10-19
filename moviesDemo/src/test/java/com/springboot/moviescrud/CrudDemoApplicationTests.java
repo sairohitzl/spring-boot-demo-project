@@ -1,6 +1,7 @@
 package com.springboot.moviescrud;
 
 import com.springboot.moviescrud.controller.DemoController;
+import com.springboot.moviescrud.controller.LoginController;
 import com.springboot.moviescrud.dao.MovieRepository;
 import com.springboot.moviescrud.dao.ReviewRepository;
 import com.springboot.moviescrud.dao.UserRepository;
@@ -32,9 +33,6 @@ import static org.mockito.Mockito.*;
 @RunWith(SpringRunner.class)
 class CrudDemoApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
 
 	@Autowired
 	private MovieService movieService;
@@ -69,7 +67,7 @@ class CrudDemoApplicationTests {
 	}
 
 	@Test
-	public void findAllTestMovie() {
+	 void findAllTestMovie() {
 		when(movieRepository.findAll()).thenReturn(Stream.of(new Movie("movie1", 50, "genre1"),
 				new Movie("movie1", 50, "genre1")).collect(Collectors.toList()));
 
@@ -77,7 +75,7 @@ class CrudDemoApplicationTests {
 	}
 
 	@Test
-	public void findByIdTestMovie() {
+	 void findByIdTestMovie() {
 		int id = 0;
 		Movie movie = new Movie("movie1", 50, "genre1");
 		when(movieRepository.findById(id)).thenReturn(Optional.of(movie));
@@ -86,7 +84,7 @@ class CrudDemoApplicationTests {
 	}
 
 	@Test
-	public void saveMovie()
+	 void saveMovie()
 	{
 		Movie movie = new Movie("movie2", 50, "genre2");
 		movieService.save(movie);
@@ -94,7 +92,7 @@ class CrudDemoApplicationTests {
 	}
 
 	@Test
-	public void deleteByIdTestMovie(){
+	 void deleteByIdTestMovie(){
 		Movie movie = new Movie("movie2", 50, "genre2");
 		movieService.deleteById(0);
 		verify(movieRepository,times(1)).deleteById(0);
@@ -103,7 +101,7 @@ class CrudDemoApplicationTests {
 
 
 	@Test
-	public void findAllTestReview() {
+	 void findAllTestReview() {
 		when(reviewRepository.findAll()).thenReturn(Stream.of(new Review("greatest movie"),
 				new Review("one of the best movie")).collect(Collectors.toList()));
 
@@ -111,7 +109,7 @@ class CrudDemoApplicationTests {
 	}
 
 	@Test
-	public void findByIdTestReview() {
+	 void findByIdTestReview() {
 		int id = 0;
 		Review review = new Review("crazyy movie");
 		when(reviewRepository.findById(id)).thenReturn(Optional.of(review));
@@ -120,7 +118,7 @@ class CrudDemoApplicationTests {
 	}
 
 	@Test
-	public void saveReview()
+	 void saveReview()
 	{
 		Review review = new Review("crazyy movie");
 		reviewService.save(review);
@@ -128,14 +126,14 @@ class CrudDemoApplicationTests {
 	}
 
 	@Test
-	public void deleteByIdTestReview(){
+	 void deleteByIdTestReview(){
 		Review review = new Review("crazyy movie");
 		reviewService.deleteById(0);
 		verify(reviewRepository,times(1)).deleteById(0);
 	}
 
 	@Test
-	public void findAllTestUser() {
+	 void findAllTestUser() {
 		when(userRepository.findAll())
 				.thenReturn(Stream.of(
 								new User(1,"karthik",
@@ -148,7 +146,7 @@ class CrudDemoApplicationTests {
 	}
 
 	@Test
-	public void findByIdTestUser() {
+	 void findByIdTestUser() {
 		int id = 1;
 		User user =  new User(1,"karthik",
 				"password123",1,reviews,authority);
@@ -158,7 +156,7 @@ class CrudDemoApplicationTests {
 	}
 
 	@Test
-	public void saveUser()
+	 void saveUser()
 	{
 		User user =  new User(1,"karthik",
 				"password123",1,reviews,authority);
@@ -167,7 +165,7 @@ class CrudDemoApplicationTests {
 	}
 
 	@Test
-	public void deleteByIdTestUser(){
+	 void deleteByIdTestUser(){
 		User user =  new User(1,"karthik",
 				"password123",1,reviews,authority);
 		userService.deleteById(1);
@@ -180,6 +178,16 @@ class CrudDemoApplicationTests {
 		String response = demoController.showHome();          //Act
 		Assertions.assertEquals("redirect:/login-page",response); //Assert
 	}
+
+	@Test
+	void loginPage()
+	{
+		LoginController loginController = new LoginController();
+		String response = loginController.showMyLoginPage();
+		Assertions.assertEquals("fancy-login",response);
+	}
+
+
 
 
 

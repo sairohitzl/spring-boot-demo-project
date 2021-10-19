@@ -27,43 +27,22 @@ import java.util.List;
 @RequestMapping("/api")       //parent request mapping
 public class MovieRestController {
 
-    private static final String RedirectAddress = "redirect:/api/movies-directory";
-    private static final String ReviewModelName = "reviews";
-    private static final String MovieModelName  = "movie";
+    private static final String REDIRECT_ADDRESS = "redirect:/api/movies-directory";
+    private static final String REVIEW_MODEL_NAME = "reviews";
+    private static final String MOVIE_MODEL_NAME  = "movie";
     private MovieService movieService;
     @Autowired
     private ReviewService reviewService;
 
     @Autowired
     private UserService userService;
+    public MovieRestController(){}
 
     @Autowired
     public MovieRestController(MovieService theMovieService) {
         movieService=theMovieService;
     }
 
-    // controller mappings for html page
-   /*
-    @GetMapping("/listMovies")
-    public String listMovies(Model model)
-    {
-        MovieConverter movieConverter = new MovieConverter();
-        List<MovieDTO> movieDTOList = movieConverter.entityToDto(movieService.findAll());
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        //User user = userService.findUsername(name);
-        UserConverter userConverter = new UserConverter();
-        UserDTO userDTO = userConverter.entityToDto(userService.findUsername(name));
-        //List<Movie> movies = movieService.findAll();
-
-        model.addAttribute("movies",movieDTOList);
-
-        model.addAttribute("user",userDTO);
-
-
-        return "list-movies";
-    }
-
-    */
 
     @GetMapping("/movies-directory")
     public String paginatedMovies(Model model)
@@ -79,7 +58,7 @@ public class MovieRestController {
         MovieDTO movieDTO = movieConverter.entityToDto(movieService.findById(theMovieId));
         List<Review> reviews = movieDTO.getReviews();
         List<ReviewDTO> reviewDTOList =  reviewConverter.entityToDto(reviews);
-        model.addAttribute(ReviewModelName,reviewDTOList);
+        model.addAttribute(REVIEW_MODEL_NAME,reviewDTOList);
 
 
         return "list-reviews";
@@ -95,7 +74,7 @@ public class MovieRestController {
         List<ReviewDTO> reviewDTOList = reviewConverter.entityToDto(userDTO.getReviews());
 
 
-        model.addAttribute(ReviewModelName,reviewDTOList);
+        model.addAttribute(REVIEW_MODEL_NAME,reviewDTOList);
 
 
         return "user-reviews";
@@ -110,7 +89,7 @@ public class MovieRestController {
 
         MovieDTO movieDTO = new MovieDTO();
 
-        theModel.addAttribute(MovieModelName, movieDTO);
+        theModel.addAttribute(MOVIE_MODEL_NAME, movieDTO);
 
         return "movie-form";
     }
@@ -120,7 +99,7 @@ public class MovieRestController {
     {   MovieConverter movieConverter = new MovieConverter();
         MovieDTO movieDTO  = movieConverter.entityToDto(movieService.findById(id));
 
-        model.addAttribute(MovieModelName,movieDTO);
+        model.addAttribute(MOVIE_MODEL_NAME,movieDTO);
         return "movie-form";
     }
 
@@ -132,7 +111,7 @@ public class MovieRestController {
 
 
         // use a redirect to prevent duplicate submissions
-        return RedirectAddress;
+        return REDIRECT_ADDRESS;
     }
 
     @GetMapping("/delete-movie")
@@ -141,7 +120,7 @@ public class MovieRestController {
 
         movieService.deleteById(id);
 
-        return RedirectAddress;
+        return REDIRECT_ADDRESS;
     }
 
     //method for pagination.
@@ -176,7 +155,7 @@ public class MovieRestController {
     {
         MovieConverter movieConverter = new MovieConverter();
         MovieDTO movieDTO = movieConverter.entityToDto(movieService.findById(id));
-        theModel.addAttribute(MovieModelName,movieDTO);
+        theModel.addAttribute(MOVIE_MODEL_NAME,movieDTO);
         ReviewDTO reviewDTO = new ReviewDTO();
         theModel.addAttribute("review", reviewDTO);
 
@@ -194,7 +173,7 @@ public class MovieRestController {
         theReview.setMovie(movie);
         theReview.setUser(user);
         reviewService.save(theReview);
-        return RedirectAddress;
+        return REDIRECT_ADDRESS;
     }
 
     @GetMapping("/delete-review")
@@ -202,14 +181,14 @@ public class MovieRestController {
     {
         reviewService.deleteById(id);
 
-        return RedirectAddress;
+        return REDIRECT_ADDRESS;
     }
 
     @GetMapping("/reviews")
     public String listReviews(Model model)
     {
         List<Review> reviews = reviewService.findAll();
-        model.addAttribute(ReviewModelName,reviews);
+        model.addAttribute(REVIEW_MODEL_NAME,reviews);
 
         return "list-reviews";
     }
