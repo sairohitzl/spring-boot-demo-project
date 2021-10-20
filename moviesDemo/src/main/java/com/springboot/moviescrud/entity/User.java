@@ -48,12 +48,49 @@ public class User {
 
     public User(){}
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public User(int userId, String username, String password, int enabled, List<Review> reviews, Authority theAuthority) {
         this.userId = userId;
         this.username = username;
         this.password = password;
         this.enabled = enabled;
         this.reviews = reviews;
+        this.theAuthority = theAuthority;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public Authority getTheAuthority() {
+        return theAuthority;
+    }
+
+    public void setTheAuthority(Authority theAuthority) {
         this.theAuthority = theAuthority;
     }
 }

@@ -6,6 +6,7 @@ import com.springboot.moviescrud.converter.UserConverter;
 import com.springboot.moviescrud.dto.MovieDTO;
 import com.springboot.moviescrud.dto.ReviewDTO;
 import com.springboot.moviescrud.dto.UserDTO;
+import com.springboot.moviescrud.entity.Authority;
 import com.springboot.moviescrud.entity.Movie;
 import com.springboot.moviescrud.entity.Review;
 import com.springboot.moviescrud.entity.User;
@@ -15,10 +16,15 @@ import com.springboot.moviescrud.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -191,6 +197,36 @@ public class MovieRestController {
         model.addAttribute(REVIEW_MODEL_NAME,reviews);
 
         return "list-reviews";
+    }
+
+    @GetMapping("/registration-form")
+    public String showRegistrationForm(Model model) {
+        User user = new User();
+        model.addAttribute("user",user);
+
+        return "sign-up";
+    }
+
+
+    @PostMapping("/register")
+    public String processRegister(@Valid User user, BindingResult bindingResult, Model model) {
+
+        user.setTheAuthority(new Authority(2));
+        List<Review> reviews = new ArrayList<>();
+        user.setReviews(reviews);
+        user.setEnabled(1);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        if (userService.usernameAlreadyExists(user.getUsername())){
+            bindingResult.addError(new FieldError("user","username","username already exists"));
+        }
+        if (bindingResult.hasErrors()){
+            return "sign-up";
+        }
+        userService.save(user);
+
+        return "register-success";
     }
 
 }

@@ -1,8 +1,6 @@
 package com.springboot.moviescrud.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "review")
@@ -13,8 +11,8 @@ public class Review {
     @Column(name = "review_id")
     private int id;
 
-    @NotNull
-    @Size(min = 10,max = 1000)
+
+
     @Column(name = "review")
     private String reviewContent;
 

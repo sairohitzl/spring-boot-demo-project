@@ -31,7 +31,8 @@ public class Authority {
                     CascadeType.DETACH, CascadeType.REFRESH})
     private List<User> users;
 
-    public Authority(){}
+    public Authority(){
+    }
 
     public Authority(int authorityId) {
         this.authorityId = authorityId;

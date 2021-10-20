@@ -15,4 +15,6 @@ public interface UserService {
     public void deleteById(int theId);
 
     public User findByUsername(String s);
+
+    public boolean usernameAlreadyExists(String email);
 }

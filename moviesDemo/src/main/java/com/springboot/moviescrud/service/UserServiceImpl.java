@@ -56,4 +56,10 @@ public class UserServiceImpl implements UserService {
     {
         return userRepository.findByUsername(s);
     }
+
+
+    public boolean usernameAlreadyExists(String email){
+
+        return (findByUsername(email) != null);
+    }
 }
