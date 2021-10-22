@@ -36,12 +36,21 @@
         <input type="hidden" th:field="*{id}"/>
 
         <p> Enter Movie Name:</p>
+        <div class="form-row py-1">
         <input type="text" th:field="*{movieName}"
-               class="form-control mb-4 col-4" placeholder="Movie Name" required="required" pattern="[^\s][A-z0-9À-ž\s]+">
+               class="form-control  col-4" placeholder="Movie Name" th:errorClass="is-invalid">
+        <div th:if="${#fields.hasErrors('movieName')}" th:errors="*{movieName}"
+             class="invalid-feedback"></div>
+        </div>
 
         <p> Enter Length of Movie in (mins):</p>
-        <input type="text" th:field="*{length}"
-               class="form-control mb-4 col-4" placeholder="Length" required="required" pattern="[0-9]+" >
+        <div class="form-row py-1">
+        <input type="number" th:value=0  th:field="*{length}"
+               class="form-control  col-4" placeholder="Length" required  th:errorClass="is-invalid" >
+        <div th:if="${#fields.hasErrors('length')}" th:errors="*{length}"
+             class="invalid-feedback"></div>
+        </div>
+
 
 
         <p >Genre: </p>

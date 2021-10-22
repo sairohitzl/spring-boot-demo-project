@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>404 Not Found!!</title>
+</head>
+<body>
+<p>movie with given id does not exist!!</p>
+<a sec:authorize="hasAnyRole('ROLE_ADMIN')" th:href="@{/api/movies-directory}">Back to Movies List</a>
+<a sec:authorize="hasAnyRole('ROLE_USER')" th:href="@{/api/user-movies-directory}">Back to Movies List</a>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.springboot.moviescrud.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "review")
@@ -12,7 +13,7 @@ public class Review {
     private int id;
 
 
-
+    @NotEmpty(message = "this field cannot be empty")
     @Column(name = "review")
     private String reviewContent;
 

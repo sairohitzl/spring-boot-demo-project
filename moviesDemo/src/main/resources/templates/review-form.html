@@ -28,7 +28,10 @@
 
 
          <input type="text" th:field="*{reviewContent}"
-                class="form-control mb-4 col-4" placeholder="Review of Movie" required pattern="[^\s][A-z0-9À-ž\s]+">
+                class="form-control mb-4 col-4" placeholder="Review of Movie" required
+                th:errorClass="is-invalid">
+        <div th:if="${#fields.hasErrors('reviewContent')}"  th:errors="*{reviewContent}"
+             class="invalid-feedback"></div>
 
 
          <button type="submit" class="btn btn-info col-2">Add to this Movie</button>
@@ -36,7 +39,7 @@
      </form>
 
      <hr>
-     <a th:href="@{/api/movies-directory}">Back to Movies List</a>
+     <a th:href="@{/api/user-movies-directory}">Back to Movies List</a>
 
  </div>
  </body>

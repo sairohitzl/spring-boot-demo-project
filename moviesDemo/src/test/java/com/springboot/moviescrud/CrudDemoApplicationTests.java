@@ -2,6 +2,7 @@ package com.springboot.moviescrud;
 
 import com.springboot.moviescrud.controller.DemoController;
 import com.springboot.moviescrud.controller.LoginController;
+import com.springboot.moviescrud.controller.MovieRestController;
 import com.springboot.moviescrud.dao.MovieRepository;
 import com.springboot.moviescrud.dao.ReviewRepository;
 import com.springboot.moviescrud.dao.UserRepository;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -184,12 +186,8 @@ class CrudDemoApplicationTests {
 	{
 		LoginController loginController = new LoginController();
 		String response = loginController.showMyLoginPage();
-		Assertions.assertEquals("fancy-login",response);
+		Assertions.assertEquals("new-login",response);
 	}
-
-
-
-
 
 
 }

@@ -36,6 +36,8 @@ public class MovieRestController {
     private static final String REDIRECT_ADDRESS = "redirect:/api/movies-directory";
     private static final String REVIEW_MODEL_NAME = "reviews";
     private static final String MOVIE_MODEL_NAME  = "movie";
+    private static final String MOVIE_FORM_NAME  = "movie-form";
+
     private MovieService movieService;
     @Autowired
     private ReviewService reviewService;
@@ -56,9 +58,25 @@ public class MovieRestController {
         return findPaginated(1,"movieName","asc",model);
     }
 
+    @GetMapping("/user-movies-directory")
+    public String paginatedMoviesUser(Model model)
+    {
+        return findPaginated(1,"movieName","asc",model);
+    }
+
+
+
     @GetMapping("/movie-reviews")
     public String movieReviews(@RequestParam("movieId") int theMovieId,Model model)
     {
+        try
+        {
+             movieService.findById(theMovieId);
+        }
+        catch(RuntimeException e)
+        {
+            return "movie-not-found";
+        }
         MovieConverter movieConverter = new MovieConverter();
         ReviewConverter reviewConverter = new ReviewConverter();
         MovieDTO movieDTO = movieConverter.entityToDto(movieService.findById(theMovieId));
@@ -97,24 +115,41 @@ public class MovieRestController {
 
         theModel.addAttribute(MOVIE_MODEL_NAME, movieDTO);
 
-        return "movie-form";
+        return MOVIE_FORM_NAME;
     }
 
     @GetMapping("/update-movie")
-    public String showFormForUpdate(@RequestParam("movieId") int id, Model model)
-    {   MovieConverter movieConverter = new MovieConverter();
+    public String showFormForUpdate(@RequestParam("movieId") int id, Model model){
+
+      MovieConverter movieConverter = new MovieConverter();
+      try
+      {
+          movieService.findById(id);
+      }
+      catch(RuntimeException e)
+      {
+          return "movie-not-found";
+      }
+
         MovieDTO movieDTO  = movieConverter.entityToDto(movieService.findById(id));
 
         model.addAttribute(MOVIE_MODEL_NAME,movieDTO);
-        return "movie-form";
+        return MOVIE_FORM_NAME;
     }
 
     @PostMapping("/save-movie")
-    public String saveMovie(@ModelAttribute("movie") Movie theMovie) {
+    public String saveMovie(@Valid @ModelAttribute("movie") Movie theMovie,BindingResult bindingResult) {
 
-        // save the employee
-        movieService.save(theMovie);
+        if (bindingResult.hasErrors()){
+            return MOVIE_FORM_NAME;
+        }
+        try {
+            movieService.save(theMovie);
+        }
 
+        catch(Exception ex){
+            return "redirect:/api/save-movie";
+        }
 
         // use a redirect to prevent duplicate submissions
         return REDIRECT_ADDRESS;
@@ -135,25 +170,32 @@ public class MovieRestController {
     public String findPaginated(@PathVariable(value="pageNo") int pageNo,
                                 @RequestParam("sortField") String sortField,
                                 @RequestParam("sortDir") String sortDir,
-                                Model model){
-        int pageSize=5;
-        Page<Movie> page = movieService.findPaginated(pageNo,pageSize,sortField,sortDir);
+                                Model model) {
+        int pageSize = 5;
+        Page<Movie> page = movieService.findPaginated(pageNo, pageSize, sortField, sortDir);
         List<Movie> movies = page.getContent();
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         UserConverter userConverter = new UserConverter();
         UserDTO userDTO = userConverter.entityToDto(userService.findByUsername((name)));
-        model.addAttribute("currentPage",pageNo);
-        model.addAttribute("totalPages",page.getTotalPages());
-        model.addAttribute("totalItems",page.getTotalElements());
-        model.addAttribute("movies",movies);
-        model.addAttribute("user",userDTO);
-        model.addAttribute("sortField",sortField);
-        model.addAttribute("sortDir",sortDir);
-        model.addAttribute("reverseSortDir",sortDir.equals("asc") ? "desc":"asc");
+        String role = userDTO.getTheAuthority().getAuthorityRole();
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("movies", movies);
+        model.addAttribute("user", userDTO);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
 
+        if (role.equals("ROLE_ADMIN")) {
+            return "list-movies";
+        }
 
-        return "list-movies";
+        return "list-user-movies";
+
     }
+
+
 
 
     @GetMapping("/add-review")
@@ -170,16 +212,33 @@ public class MovieRestController {
     }
 
     @PostMapping("/save-review")
-    public String saveMovie(@RequestParam("movieId") int id,@ModelAttribute("review") Review theReview){
+    public String saveMovie(@RequestParam("movieId") int id,
+                            @Valid @ModelAttribute("review") Review theReview,BindingResult bindingResult){
+
+
         Movie movie = movieService.findById(id);
         String name = SecurityContextHolder.getContext().getAuthentication().getName(); //**
         User user = userService.findByUsername(name);
+
+        List<Review> reviews = movie.getReviews();
+        for(Review  r: reviews)
+        {
+            User tempUser = r.getUser();
+            if(tempUser.getUserId() == user.getUserId())
+            {
+                bindingResult.addError(new FieldError("review","reviewContent","review already exists"));
+            }
+        }
+
+        if (bindingResult.hasErrors()){
+            return "review-errors";
+        }
 
         movie.add(theReview);
         theReview.setMovie(movie);
         theReview.setUser(user);
         reviewService.save(theReview);
-        return REDIRECT_ADDRESS;
+        return "redirect:/api/user-movies-directory";
     }
 
     @GetMapping("/delete-review")

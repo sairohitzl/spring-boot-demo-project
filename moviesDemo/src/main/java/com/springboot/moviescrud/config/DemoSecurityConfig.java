@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 
 import javax.sql.DataSource;
@@ -18,6 +19,9 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter {
 	// add a reference to our security data source
 	@Autowired
 	private DataSource securityDataSource;
+
+	@Autowired
+	private AuthenticationSuccessHandler authenticationSuccessHandler;
 
 
 	@Override
@@ -38,18 +42,24 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception
 	{
-
+			String admin="ADMIN";
 		http.authorizeRequests()
-			.antMatchers("/admin/**").hasRole("ADMIN")
-			.antMatchers("/user/**").hasRole("USER")
+			.antMatchers("/api/movies-directory/**").hasRole(admin)
+				.antMatchers("/api/add-movie/**").hasRole(admin)
+				.antMatchers("/api/update-movie/**").hasRole(admin)
+				.antMatchers("/api/delete-movie/**").hasRole(admin)
+				.antMatchers("/api/save-movie/**").hasRole(admin)
+			.antMatchers("/api/user-movies-directory/**").hasRole("USER")
 			.and()
 			.formLogin()
 				.loginPage("/login-page")
 				.loginProcessingUrl("/authenticateTheUser").usernameParameter("username").passwordParameter("password")
-				.defaultSuccessUrl("/api/movies-directory")
+				.successHandler(authenticationSuccessHandler)
 				.permitAll()
 				.and()
-				.logout().permitAll();
+				.logout().permitAll()
+				.and()
+				.exceptionHandling().accessDeniedPage("/access-denied");
 
 		
 	}

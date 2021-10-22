@@ -1,6 +1,9 @@
 package com.springboot.moviescrud.entity;
 
+
+
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +19,13 @@ public class Movie {
     @Column(name="movie_id")
     private int id;
 
-   // @NotNull(message = "movie's name cannot be empty!.")
-    //@Size(min = 1,max = 50)
+    @NotEmpty(message = "movie's name cannot be empty!.")
+//    @Pattern(regexp = "[^\\s][A-z0-9À-ž\\s]+",message = "should not be empty,should only contain letters and numbers!")
     @Column(name="movie_name")
     private String movieName;
 
-    //@Positive(message = "value should be greater than 0")
-   // @NotNull(message = "this field cannot be empty")
+
+    @Min(value = 0)
     @Column(name="length")
     private int length;
 
